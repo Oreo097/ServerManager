@@ -19,14 +19,28 @@ public class Core {
     private ServerSocket coer_serversocket;
 
 
-
-
+    /*
+    构造函数
+     */
+    public Core(int port_number,int thread_number){
+        this.core_portnumber=port_number;
+        this.thread_number=thread_number;
+    }
+    /*
+    重载构造函数
+     */
     public Core(){
 
     }
 
+    /*
+        log
+     */
     Logger logger= Logger.getLogger(Core.class.getName());
 
+    /*
+    创建服务器端口
+     */
     public void setup_serversocket(){
         try{
             coer_serversocket=new ServerSocket(core_portnumber);
@@ -36,6 +50,9 @@ public class Core {
         }
     }
 
+    /*
+    创建线程池
+     */
     public void setup_threadpool(){
         try{
             core_threadpool = Executors.newCachedThreadPool();
@@ -45,6 +62,9 @@ public class Core {
         }
     }
 
+    /*
+    创建Socket
+     */
     public Socket setup_socket(){
         Socket socket=null;
         try{
@@ -56,6 +76,10 @@ public class Core {
             return null;
         }
     }
+
+    /*
+    向线程池中添加线程
+     */
     public void add_thread(Thread m_thread){
         core_threadpool.submit(m_thread);
         core_threadnumber_now++;

@@ -25,6 +25,9 @@ public class User {
     private BufferedReader user_bufferedreader;
     private PrintWriter user_printwriter;
 
+    /*
+    构造函数
+     */
     public User(Socket m_socket){
         user_socket=m_socket;
         user_checkpoint_main=true;
@@ -34,8 +37,15 @@ public class User {
         message_rece="0";
     }
 
+    /*
+    log
+     */
     Logger logger = Logger.getLogger(User.class.getName());
 
+
+    /*
+    初始化发送函数
+     */
     public void init_send(){
         try{
             user_outputstream=user_socket.getOutputStream();
@@ -46,6 +56,9 @@ public class User {
         }
     }
 
+    /*
+    初始化接收函数
+     */
     public void init_rece(){
         try{
             user_inputstream=user_socket.getInputStream();
@@ -56,12 +69,20 @@ public class User {
         }
     }
 
+
+    /*
+    初始化IO
+     */
     public void init_io(){
         init_rece();
         init_send();
         logger.info("io has been inited");
     }
 
+
+    /*
+    底层发送消息
+     */
     public void send_message(){
         user_printwriter.println(message_send);
         user_printwriter.flush();
@@ -71,6 +92,10 @@ public class User {
         logger.info("user_checkpoint_send has been turned to : "+user_checkpoint_send);
     }
 
+
+    /*
+    底层接收消息
+     */
     public void receive_message(){
         try{
             message_rece=user_bufferedreader.readLine();
@@ -78,11 +103,15 @@ public class User {
             user_checkpoint_rece=true;
             logger.info("user_checkpoint_rece has been turn to: "+user_checkpoint_rece);
         }catch(Exception e){
+            user_checkpoint_main=false;
             e.printStackTrace();
         }
 
     }
 
+    /*
+    发送服务
+     */
     public void service_send(){
         while(user_checkpoint_main){
             if(user_checkpoint_send){
@@ -91,7 +120,9 @@ public class User {
             }
         }
     }
-
+    /*
+    接收服务
+     */
     public void service_rece(){
         while(user_checkpoint_main){
             if(!user_checkpoint_rece){
@@ -101,6 +132,9 @@ public class User {
         }
     }
 
+    /*
+    看门狗服务
+     */
     public void service_watd(){
         while(true){
             if(!user_checkpoint_main){
@@ -113,6 +147,10 @@ public class User {
             Function.sleep(500);
         }
     }
+
+    /*
+    启动首发的服务
+     */
     public void setup_io(){
         rece_thread=new Thread(new Runnable() {
             @Override
@@ -132,6 +170,9 @@ public class User {
         logger.info("send_thread has been started");
     }
 
+    /*
+    启动看门狗服务
+     */
     public void setup_watd(){
         watd_thread=new Thread(new Runnable() {
             @Override
@@ -143,6 +184,9 @@ public class User {
         logger.info("watd_thread has been started");
     }
 
+    /*
+    处理消息函数
+     */
     public void dispose_message(){
         logger.info("start to dispose message");
         while(user_checkpoint_main){
@@ -152,7 +196,7 @@ public class User {
                     logger.warning("rece_message equals null");
                     user_checkpoint_main=false;
                 }
-                //Function.exec(message_rece);
+                Function.dispose(message_rece);
                 message_rece="0";
                 user_checkpoint_rece=false;
                 logger.info("user_checkpoint_rece has been turned to： "+user_checkpoint_rece);
@@ -163,6 +207,20 @@ public class User {
         }
 
         Thread.interrupted();
+    }
+
+    /*
+    供外部调用的发送函数
+     */
+    public boolean send(String message){
+        if(!user_checkpoint_send){
+            message_send=message;
+            logger.info("add message successed");
+            return true;
+        }else{
+            logger.info("add message failed");
+            return false;
+        }
     }
 
 }

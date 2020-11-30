@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "桌面客户端", "桌面客户端.csproj", "{2BD1C1CE-E9E8-4FAE-9B87-43FF4AA6A5DA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2BD1C1CE-E9E8-4FAE-9B87-43FF4AA6A5DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BD1C1CE-E9E8-4FAE-9B87-43FF4AA6A5DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BD1C1CE-E9E8-4FAE-9B87-43FF4AA6A5DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BD1C1CE-E9E8-4FAE-9B87-43FF4AA6A5DA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D4821E16-2F69-4FAB-8FF5-205FDF1CB97D}
+	EndGlobalSection
+EndGlobal
