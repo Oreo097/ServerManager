@@ -16,6 +16,13 @@ public class User {
     public int check_time_rece=500;
     public int check_time_disp=500;
 
+    public Message[] user_message_send_pool;
+    public Message[] user_message_rece_pool;
+
+    public int message_pointer_send;
+    public int message_pointer_rece;
+    public int squence
+
     private Thread send_thread;
     private Thread rece_thread;
     private Thread watd_thread;
