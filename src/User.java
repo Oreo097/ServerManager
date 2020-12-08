@@ -4,6 +4,8 @@ import java.util.logging.Logger;
 
 public class User {
 
+    public int user_id;
+
     public Socket user_socket;
     public boolean user_checkpoint_main;
     public boolean user_checkpoint_send;
@@ -16,12 +18,7 @@ public class User {
     public int check_time_rece=500;
     public int check_time_disp=500;
 
-    public Message[] user_message_send_pool;
-    public Message[] user_message_rece_pool;
-
-    public int message_pointer_send;
-    public int message_pointer_rece;
-    public int squence
+    public MessagePool user_messagepool;//消息池
 
     private Thread send_thread;
     private Thread rece_thread;
@@ -35,12 +32,13 @@ public class User {
     /*
     构造函数
      */
-    public User(Socket m_socket){
+    public User(int m_id,Socket m_socket,MessagePool m_messagepool){
+        user_id=m_id;
         user_socket=m_socket;
         user_checkpoint_main=true;
         user_checkpoint_send=false;
         user_checkpoint_rece=false;
-
+        user_messagepool=m_messagepool;
         message_rece="0";
     }
 
@@ -91,13 +89,22 @@ public class User {
     底层发送消息
      */
     public void send_message(){
-        user_printwriter.println(message_send);
-        user_printwriter.flush();
-        logger.info("message has been sended-> "+message_send);
-        message_send="0";
-        user_checkpoint_send=false;
-        logger.info("user_checkpoint_send has been turned to : "+user_checkpoint_send);
+        if(user_messagepool.message_send_pointer>=0)
+        {
+            synchronized (user_messagepool){
+                message_send=user_messagepool.messages_send[user_messagepool.message_send_pointer].message;
+            }
+            user_printwriter.println(message_send);
+            user_printwriter.flush();
+            logger.info("message has been sended-> "+message_send);
+            message_send="0";
+            user_messagepool.message_send_pointer--;//消息指针减一
+            logger.info("user_checkpoint_send has been turned to : "+user_checkpoint_send);
+            return;
+        }
+        logger.info("messagepool_sendmessage_clean");
     }
+
 
 
     /*
@@ -107,13 +114,16 @@ public class User {
         try{
             message_rece=user_bufferedreader.readLine();
             logger.info("received message-> "+message_rece);
-            user_checkpoint_rece=true;
+            Message message_rece_Message=Message.dispose_message(message_rece);
+            synchronized (user_messagepool){
+                user_messagepool.messages_rece[user_messagepool.message_rece_pointer+1]=message_rece_Message;
+                user_messagepool.message_rece_pointer++;
+            }
             logger.info("user_checkpoint_rece has been turn to: "+user_checkpoint_rece);
         }catch(Exception e){
             user_checkpoint_main=false;
             e.printStackTrace();
         }
-
     }
 
     /*

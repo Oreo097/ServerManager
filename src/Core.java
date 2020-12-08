@@ -13,8 +13,13 @@ public class Core {
 
     public int core_portnumber=2455;//核心端口号
 
-    public boolean core_checkpoint_main;
+    public boolean core_checkpoint_main;//控制核心开关的checkpoint
 
+    public User user[]=null;//id池
+    public int user_id_pointer;//新的id池的指针
+    public int id_recycle[];//回收的id，优先使用回收的id，且有限使用最后一个，当回收的id池为空的时候才使用新的id池
+
+    public MessagePool users_messaage_pool;//用户的消息池索引，其索引值和user_id值对应
 
     private ServerSocket coer_serversocket;
 
@@ -84,6 +89,8 @@ public class Core {
         core_threadpool.submit(m_thread);
         core_threadnumber_now++;
     }
+
+
 
 
 }
