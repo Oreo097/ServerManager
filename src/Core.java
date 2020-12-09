@@ -16,7 +16,8 @@ public class Core {
     public boolean core_checkpoint_main;//控制核心开关的checkpoint
 
     public User user[]=null;//id池
-    public int user_id_pointer;//新的id池的指针
+    public int user_id_pointer=-1;//新的id池的指针
+
     public int id_recycle[];//回收的id，优先使用回收的id，且有限使用最后一个，当回收的id池为空的时候才使用新的id池
 
     public int distribute_time;
@@ -124,7 +125,8 @@ public class Core {
                 Thread user_thread=new Thread(new Runnable() {
                     @Override
                     public void run() {
-
+                        user_id_pointer++;
+                        user[user_id_pointer]=new User(user_id_pointer,setup_socket());
                     }
                 })
                 add_thread();
