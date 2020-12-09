@@ -116,10 +116,10 @@ public class User {
             logger.info("received message-> "+message_rece);
             Message message_rece_Message=Message.dispose_message(message_rece);
             synchronized (user_messagepool){
-                user_messagepool.messages_rece[user_messagepool.message_rece_pointer+1]=message_rece_Message;
                 user_messagepool.message_rece_pointer++;
+                user_messagepool.messages_rece[user_messagepool.message_rece_pointer]=message_rece_Message;
             }
-            logger.info("user_checkpoint_rece has been turn to: "+user_checkpoint_rece);
+
         }catch(Exception e){
             user_checkpoint_main=false;
             e.printStackTrace();
