@@ -166,7 +166,7 @@ public class User {
     }
 
     /*
-    启动首发的服务
+    启动收发的服务
      */
     public void setup_io(){
         rece_thread=new Thread(new Runnable() {
@@ -239,5 +239,7 @@ public class User {
             return false;
         }
     }
+
+
 
 }
